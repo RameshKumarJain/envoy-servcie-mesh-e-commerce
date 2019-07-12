@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+  name: management-server
+  labels:
+    app: management-server
+spec:
+  type: NodePort
+  ports:
+  - port: 5678
+    name: management-server
+    targetPort: 5678
+    nodePort: 30568
+  selector:
+    app: management-server
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: management-server-deployment
+spec:
+  template:
+    metadata:
+      labels:
+        app: management-server
+    spec:
+      containers:
+      - name: management-server-container
+        image: management-server
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80

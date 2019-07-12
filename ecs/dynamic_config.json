@@ -1,0 +1,280 @@
+[
+  {
+    "version": "1",
+    "nodeClusterName": "envoy_front_proxy",
+    "listenerConfig": {
+      "listnerName": "listener_0",
+      "ipAddress": "front-envoy.local",
+      "port": 80
+    },
+    "routeConfig": {
+      "routeName": "local_route",
+      "serviceName": "local_service",
+      "domain": "*",
+      "routesList": [
+        {
+          "routePrefix": "/product",
+          "clusterName": null,
+          "weightedClusterList": [
+            {
+              "clusterName": "productCluster0",
+              "weight": 75
+            },
+            {
+              "clusterName": "productCluster1",
+              "weight": 25
+            }
+          ]
+        },
+        {
+          "routePrefix": "/data",
+          "clusterName": "dataCluster0",
+          "weightedClusterList": null
+        },
+        {
+          "routePrefix": "/payment",
+          "clusterName": null,
+          "weightedClusterList": [
+            {
+              "clusterName": "paymentCluster0",
+              "weight": 75
+            },
+            {
+              "clusterName": "paymentCluster1",
+              "weight": 25
+            }
+          ]
+        }
+      ]
+    },
+    "clusterNameList": [
+      "productCluster0",
+      "productCluster1",
+      "dataCluster0",
+      "paymentCluster0",
+      "paymentCluster1"
+    ],
+    "endpointConfigList": [
+      {
+        "clusterName": "productCluster0",
+        "lbPointsList": [
+          {
+            "ipAddress": "envoy-product-side-car0.local",
+            "port": 80
+          }
+        ]
+      },
+      {
+        "clusterName": "productCluster1",
+        "lbPointsList": [
+          {
+            "ipAddress": "envoy-product-side-car1.local",
+            "port": 80
+          }
+        ]
+      },
+      {
+        "clusterName": "dataCluster0",
+        "lbPointsList": [
+          {
+            "ipAddress": "envoy-data-side-car.local",
+            "port": 80
+          }
+        ]
+      },
+      {
+        "clusterName": "paymentCluster0",
+        "lbPointsList": [
+          {
+            "ipAddress": "envoy-payment-side-car0.local",
+            "port": 80
+          }
+        ]
+      },
+      {
+        "clusterName": "paymentCluster1",
+        "lbPointsList": [
+          {
+            "ipAddress": "envoy-payment-side-car1.local",
+            "port": 80
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "version": "1",
+    "nodeClusterName": "envoy_product_side_car0",
+    "listenerConfig": {
+      "listnerName": "listener_0",
+      "ipAddress": "envoy-sidecar1",
+      "port": 80
+    },
+    "routeConfig": {
+      "routeName": "local_route",
+      "serviceName": "local_service",
+      "domain": "*",
+      "routesList": [
+        {
+          "routePrefix": "/",
+          "clusterName": "cluster0",
+          "weightedClusterList": null
+        }
+      ]
+    },
+    "clusterNameList": [
+      "cluster0"
+    ],
+    "endpointConfigList": [
+      {
+        "clusterName": "cluster0",
+        "lbPointsList": [
+          {
+            "ipAddress": "127.0.0.1",
+            "port": 8080
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "version": "1",
+    "nodeClusterName": "envoy_product_side_car1",
+    "listenerConfig": {
+      "listnerName": "listener_0",
+      "ipAddress": "envoy-sidecar2",
+      "port": 80
+    },
+    "routeConfig": {
+      "routeName": "local_route",
+      "serviceName": "local_service",
+      "domain": "*",
+      "routesList": [
+        {
+          "routePrefix": "/",
+          "clusterName": "cluster0",
+          "weightedClusterList": null
+        }
+      ]
+    },
+    "clusterNameList": [
+      "cluster0"
+    ],
+    "endpointConfigList": [
+      {
+        "clusterName": "cluster0",
+        "lbPointsList": [
+          {
+            "ipAddress": "127.0.0.1",
+            "port": 8080
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "version": "1",
+    "nodeClusterName": "envoy_data_side_car0",
+    "listenerConfig": {
+      "listnerName": "listener_0",
+      "ipAddress": "envoy-sidecar3",
+      "port": 80
+    },
+    "routeConfig": {
+      "routeName": "local_route",
+      "serviceName": "local_service",
+      "domain": "*",
+      "routesList": [
+        {
+          "routePrefix": "/",
+          "clusterName": "cluster0",
+          "weightedClusterList": null
+        }
+      ]
+    },
+    "clusterNameList": [
+      "cluster0"
+    ],
+    "endpointConfigList": [
+      {
+        "clusterName": "cluster0",
+        "lbPointsList": [
+          {
+            "ipAddress": "127.0.0.1",
+            "port": 8080
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "version": "1",
+    "nodeClusterName": "envoy_payment_side_car0",
+    "listenerConfig": {
+      "listnerName": "listener_0",
+      "ipAddress": "envoy-sidecar4",
+      "port": 80
+    },
+    "routeConfig": {
+      "routeName": "local_route",
+      "serviceName": "local_service",
+      "domain": "*",
+      "routesList": [
+        {
+          "routePrefix": "/",
+          "clusterName": "cluster0",
+          "weightedClusterList": null
+        }
+      ]
+    },
+    "clusterNameList": [
+      "cluster0"
+    ],
+    "endpointConfigList": [
+      {
+        "clusterName": "cluster0",
+        "lbPointsList": [
+          {
+            "ipAddress": "127.0.0.1",
+            "port": 8080
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "version": "1",
+    "nodeClusterName": "envoy_payment_side_car1",
+    "listenerConfig": {
+      "listnerName": "listener_0",
+      "ipAddress": "envoy-sidecar5",
+      "port": 80
+    },
+    "routeConfig": {
+      "routeName": "local_route",
+      "serviceName": "local_service",
+      "domain": "*",
+      "routesList": [
+        {
+          "routePrefix": "/",
+          "clusterName": "cluster0",
+          "weightedClusterList": null
+        }
+      ]
+    },
+    "clusterNameList": [
+      "cluster0"
+    ],
+    "endpointConfigList": [
+      {
+        "clusterName": "cluster0",
+        "lbPointsList": [
+          {
+            "ipAddress": "127.0.0.1",
+            "port": 8080
+          }
+        ]
+      }
+    ]
+  }
+]

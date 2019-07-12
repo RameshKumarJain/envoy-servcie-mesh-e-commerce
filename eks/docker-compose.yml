@@ -1,0 +1,102 @@
+version: '2'
+services:
+  front-envoy:
+    build:
+      context: .
+      dockerfile: Dockerfile-front-proxy
+    networks:
+      - envoymesh
+    expose:
+      - "80"
+      - "8001"
+    ports:
+      - "8000:80"
+      - "8001:8001"
+
+  management-server:
+    build:
+      context: .
+      dockerfile: Dockerfile-server
+    networks:
+      envoymesh:
+        aliases:
+          - management-server
+    expose:
+      - "5678"
+    ports:
+      - "5678:5678"
+
+  envoy-product-side-car0:
+    build:
+      context: .
+      dockerfile: Dockerfile-product-service0
+    networks:
+      envoymesh:
+        aliases:
+          - Dockerfile-product-sidecar
+    expose:
+      - "80"
+    ports:
+      - "7000:80"
+      - "7080:8081"
+      - "7090:90"
+  envoy-product-side-car1:
+    build:
+      context: .
+      dockerfile: Dockerfile-product-service1
+    networks:
+      envoymesh:
+        aliases:
+          - Dockerfile-product-sidecar
+    expose:
+      - "80"
+    ports:
+      - "7001:80"
+      - "7081:8080"
+      - "7091:90"
+
+  envoy-payment-side-car0:
+    build:
+      context: .
+      dockerfile: Dockerfile-payment-service0
+    networks:
+      envoymesh:
+        aliases:
+          - envoy-payment-side-car
+    expose:
+      - "80"
+    ports:
+      - "7002:80"
+      - "7082:8081"
+      - "7092:90"
+  envoy-payment-side-car1:
+    build:
+      context: .
+      dockerfile: Dockerfile-payment-service1
+    networks:
+      envoymesh:
+        aliases:
+          - envoy-payment-side-car
+    expose:
+      - "80"
+    ports:
+      - "7003:80"
+      - "7083:8081"
+      - "7093:90"
+
+  envoy-data-side-car:
+    build:
+      context: .
+      dockerfile: Dockerfile-data-service
+    networks:
+      envoymesh:
+        aliases:
+          - envoy-data-side-car
+    expose:
+      - "80"
+    ports:
+      - "7004:80"
+      - "7084:8081"
+
+networks:
+  envoymesh: {}

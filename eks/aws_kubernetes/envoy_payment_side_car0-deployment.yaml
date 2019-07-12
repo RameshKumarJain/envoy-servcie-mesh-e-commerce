@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+  name: envoy-payment-side-car0
+  labels:
+    app: envoy-payment-side-car0
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    name: envoy-payment-side-car0
+    targetPort: 80
+    nodePort: 30100
+  - port: 8081
+    name: envoy-payment-side-car0-admin
+    targetPort: 8081
+    nodePort: 30101
+  selector:
+    app: envoy-payment-side-car0
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: envoy-payment-side-car0-deployment
+spec:
+  template:
+    metadata:
+      labels:
+        app: envoy-payment-side-car0
+    spec:
+      containers:
+      - name: envoy-payment-side-car0-container
+        image: 190740472821.dkr.ecr.ap-south-1.amazonaws.com/eks_envoy_payment_side_car0:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80

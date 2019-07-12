@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+  name: envoy-cart-side-car0
+  labels:
+    app: envoy-cart-side-car0
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    name: envoy-cart-side-car0
+    targetPort: 80
+    nodePort: 30080
+  - port: 8081
+    name: envoy-cart-side-car0-admin
+    targetPort: 8081
+    nodePort: 30081
+  selector:
+    app: envoy-cart-side-car0
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: envoy-cart-side-car0-deployment
+spec:
+  template:
+    metadata:
+      labels:
+        app: envoy-cart-side-car0
+    spec:
+      containers:
+      - name: envoy-cart-side-car0-container
+        image: envoy-cart-side-car0
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
