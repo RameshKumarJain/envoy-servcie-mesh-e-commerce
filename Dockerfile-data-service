@@ -1,0 +1,12 @@
+FROM envoyproxy/envoy-alpine:latest
+
+RUN apk update && apk add python3 bash curl bind-tools
+RUN pip3 install -q Flask==0.11.1 requests==2.18.4
+RUN mkdir /code
+ADD ./DataService.py /code
+ADD ./StartDataServices.sh /usr/local/bin/start_service.sh
+ADD ./localhost.crt /etc/localhost.crt
+ADD ./localhost.key /etc/localhost.key
+ADD ./service-envoy.yaml /etc/service-envoy.yaml
+RUN chmod u+x /usr/local/bin/start_service.sh
+ENTRYPOINT /usr/local/bin/start_service.sh

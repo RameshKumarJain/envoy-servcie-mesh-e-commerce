@@ -1,0 +1,8 @@
+FROM envoyproxy/envoy:latest
+
+RUN apt-get update && apt-get -q install -y \
+    curl dnsutils
+ADD front-envoy.yaml /etc/front-envoy.yaml
+ADD ./localhost.crt /etc/localhost.crt
+ADD ./localhost.key /etc/localhost.key
+CMD /usr/local/bin/envoy -c /etc/front-envoy.yaml -l debug  --service-cluster envoy_front_proxy --service-node node0
